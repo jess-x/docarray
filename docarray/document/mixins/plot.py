@@ -38,7 +38,7 @@ class PlotMixin:
                 display(Audio(self.uri))
 
             elif self.mime_type.startswith('video'):
-                display(Video(self.uri))
+                display(Video(self.uri, html_attributes="controls muted autoplay"))
 
             else:
                 display(Image(self.uri))
