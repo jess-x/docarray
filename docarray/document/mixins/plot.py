@@ -31,13 +31,15 @@ class PlotMixin:
 
     def display(self):
         """ Plot image data from :attr:`.tensor` or :attr:`.uri`. """
-        from IPython.display import Image, display
+        from IPython.display import Image, Audio, Video, display
 
         if self.uri:
             if self.mime_type.startswith('audio'):
-                _html5_audio_player(self.uri)
+                display(Audio(self.uri))
+
             elif self.mime_type.startswith('video'):
-                _html5_video_player(self.uri)
+                display(Video(self.uri))
+
             else:
                 display(Image(self.uri))
         elif self.tensor is not None:
@@ -56,31 +58,3 @@ class PlotMixin:
             self.summary()
 
     plot = deprecate_by(display, removed_at='0.5')
-
-
-def _html5_video_player(uri):
-    from IPython.core.display import HTML  # noqa
-
-    src = f'''
-    <body>
-    <video width="320" height="240" autoplay muted controls>
-    <source src="files/{uri}">
-    Your browser does not support the video tag.
-    </video>
-    </body>
-    '''
-    display(HTML(src))  # noqa
-
-
-def _html5_audio_player(uri):
-    from IPython.core.display import HTML  # noqa
-
-    src = f'''
-    <body>
-    <audio controls="controls" style="width:320px" >
-      <source src="files/{uri}"/>
-      Your browser does not support the audio element.
-    </audio>
-    </body>
-    '''
-    display(HTML(src))  # noqa
